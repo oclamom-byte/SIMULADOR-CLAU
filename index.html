@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de Mantenimiento de PCs</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #1e1e2f;
+    color: white;
+    text-align: center;
+}
+
+/* CONTENIDO */
+.contenido {
+    margin-top: 20px;
+    padding: 20px;
+    background: #2c2c3e;
+    border-radius: 10px;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    animation: aparecer 0.5s ease;
+}
+
+@keyframes aparecer {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+    background: #007bff;
+    padding: 15px;
+}
+
+/* BOTONES */
+.menu button {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    background: #28a745;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.menu button:hover {
+    transform: scale(1.1);
+}
+
+/* BARRA */
+.barra {
+    width: 100%;
+    background: #444;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.progreso {
+    height: 20px;
+    width: 0%;
+    background: #00ffcc;
+    border-radius: 10px;
+    transition: width 0.5s;
+}
+
+button.accion {
+    background: orange;
+    margin-top: 15px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Simulador de Mantenimiento PCs</h1>
+
+<div class="menu">
+    <button onclick="mostrar('ram')">Aumentar RAM</button>
+    <button onclick="mostrar('windows')">Instalar Windows</button>
+    <button onclick="mostrar('tutorial')">Tutorial Mantenimiento</button>
+    <button onclick="mostrar('video')">Video + Web</button>
+</div>
+
+<div class="contenido" id="contenido">
+    <p>Selecciona una opción</p>
+</div>
+
+<!-- SONIDO -->
+<audio id="clickSound">
+  <source src="sonido.mp3">
+</audio>
+
+<script>
+let pasoRAM = 1;
+let pasoWin = 0;
+
+// SONIDO
+function sonido(){
+    document.getElementById("clickSound").play();
+}
+
+// MOSTRAR OPCIONES
+function mostrar(opcion){
+    sonido();
+    let contenido = document.getElementById("contenido");
+
+    // RAM
+    if(opcion === "ram"){
+        contenido.innerHTML = `
+        <h2>Instalación de RAM</h2>
+        <p id="ramPaso">Paso 1: Apagar la computadora</p>
+
+        <div class="barra">
+            <div id="barraRAM" class="progreso"></div>
+        </div>
+
+        <button class="accion" onclick="siguienteRAM()">Siguiente</button>
+        `;
+        pasoRAM = 1;
+        actualizarBarra("barraRAM", 25);
+    }
+
+    // WINDOWS
+    if(opcion === "windows"){
+        contenido.innerHTML = `
+        <h2>Instalación de Windows</h2>
+        <p id="winPaso">Bienvenido</p>
+
+        <div class="barra">
+            <div id="barraWin" class="progreso"></div>
+        </div>
+
+        <button class="accion" onclick="siguienteWin()">Siguiente</button>
+        `;
+        pasoWin = 0;
+    }
+
+    // TUTORIAL
+    if(opcion === "tutorial"){
+        contenido.innerHTML = `
+        <h2>Tutorial de Mantenimiento</h2>
+        <ul>
+            <li>Limpieza de polvo</li>
+            <li>Cambio de pasta térmica</li>
+            <li>Optimización del sistema</li>
+            <li>Eliminación de virus</li>
+        </ul>
+        `;
+    }
+
+    // VIDEO + WEB
+    if(opcion === "video"){
+        contenido.innerHTML = `
+        <h2>Documentación en Video</h2>
+        <p>En este proce se debe:</p>
+        <ul>
+            <li>Grabar instalación de RAM</li>
+            <li>Grabar formateo</li>
+            <li>Grabar limpieza</li>
+            <li>Crear página web con evidencias</li>
+        </ul>
+        <video width="300" controls>
+            <source src="" type="video/mp4">
+        </video>
+        `;
+    }
+}
+
+// BARRA
+function actualizarBarra(id, valor){
+    document.getElementById(id).style.width = valor + "%";
+}
+
+// RAM
+function siguienteRAM(){
+    sonido();
+    pasoRAM++;
+
+    let texto = document.getElementById("ramPaso");
+
+    if(pasoRAM === 2){
+        texto.innerText = "Paso 2: Abrir el gabinete";
+        actualizarBarra("barraRAM", 50);
+    }
+    else if(pasoRAM === 3){
+        texto.innerText = "Paso 3: Insertar la RAM";
+        actualizarBarra("barraRAM", 75);
+    }
+    else if(pasoRAM === 4){
+        texto.innerText = "Paso 4: Encender la PC";
+        actualizarBarra("barraRAM", 100);
+    }
+    else{
+        texto.innerText = "Proceso finalizado";
+    }
+}
+
+// WINDOWS
+function siguienteWin(){
+    sonido();
+    pasoWin++;
+
+    let texto = document.getElementById("winPaso");
+
+    if(pasoWin === 1){
+        texto.innerText = "Seleccionar idioma";
+        actualizarBarra("barraWin", 25);
+    }
+    else if(pasoWin === 2){
+        texto.innerText = "Aceptar términos";
+        actualizarBarra("barraWin", 50);
+    }
+    else if(pasoWin === 3){
+        texto.innerText = "Instalando...";
+        actualizarBarra("barraWin", 75);
+    }
+    else if(pasoWin === 4){
+        texto.innerText = "Finalizando...";
+        actualizarBarra("barraWin", 100);
+    }
+    else{
+        texto.innerText = "Windows instalado";
+    }
+}
+</script>
+
+</body>
+</html>
